@@ -1,0 +1,30 @@
+{
+  "name": "conkal/yoksis-rest-client",
+  "description": "YOKSIS rest api client",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "cengiz onkal",
+      "email": "onkal.cengiz@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^5.5",
+    "guzzlehttp/guzzle": "^6.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8",
+    "fzaninotto/faker": "^1.9"
+  },
+  "autoload": {
+    "psr-4": {
+      "Conkal\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit colors="true" backupGlobals="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
+    <php>
+        <env name="YOKSIS_USERNAME" value="username"/>
+        <env name="YOKSIS_PASSWORD" value="password"/>
+    </php>
+</phpunit>
