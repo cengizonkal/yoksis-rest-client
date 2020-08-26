@@ -1,11 +1,13 @@
 <?php
 
+namespace YOKSIS\REST\Resources;
 
-class PedagojikFormasyonAlanlariTest extends PHPUnit_Framework_TestCase
+
+use PHPUnit\Framework\TestCase;
+
+class HazirlikTurleriTest extends TestCase
 {
-
     private $client;
-
 
     public function setUp()
     {
@@ -19,10 +21,9 @@ class PedagojikFormasyonAlanlariTest extends PHPUnit_Framework_TestCase
 
     public function test_it_should_get_all()
     {
-        $entities = $this->client->pedagojikFormasyonAlanlari()->all();
+        $entities = $this->client->hazirlikTurleri()->all();
         $this->assertTrue(count($entities) > 0);
         $this->assertTrue(isset($entities[0]->ad));
     }
-
 
 }
