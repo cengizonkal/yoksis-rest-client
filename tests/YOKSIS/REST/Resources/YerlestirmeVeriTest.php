@@ -3,6 +3,7 @@
 namespace YOKSIS\REST\Resources;
 
 
+use Conkal\YOKSIS\REST\Entities\YerlestirmeVeri;
 use PHPUnit\Framework\TestCase;
 
 class YerlestirmeVeriTest extends TestCase
@@ -23,6 +24,7 @@ class YerlestirmeVeriTest extends TestCase
 
     public function test_it_should_query()
     {
+        /** @var YerlestirmeVeri[] $entities */
         $entities = $this->client->yerlestirmeVeri()->query(['tur' => 'YKS', 'yil' => '2019']);
 
         $this->assertTrue(count($entities) > 0);

@@ -1,6 +1,10 @@
 # YOKSIS REST API CLIENT
 
 ### Kurulum
+```
+composer require conkal/yoksis-rest-client 
+```
+### Kullanım
 ```php
 $pass = getenv('YOKSIS_PASSWORD');
 $user = getenv('YOKSIS_USERNAME');
@@ -22,4 +26,10 @@ $pedagojikFormasyon->fakulteId = "<fakülte id>";
 // kaydet
 $client->pedagojikFormasyon()->create($pedagojikFormasyon);
 
+```
+
+### Yerleşen Verisi
+```php
+/** @var \Conkal\YOKSIS\REST\Entities\YerlestirmeVeri[] $yerlesenler */
+$yerlesenler = $this->client->yerlestirmeVeri()->query(['tur' => 'YKS', 'yil' => '2019']);
 ```
