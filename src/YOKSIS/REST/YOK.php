@@ -7,6 +7,7 @@ use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
 use Conkal\YOKSIS\REST\Resources\HazirlikTurleri;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyonAlanlari;
+use Conkal\YOKSIS\REST\Resources\YerlestirmeVeri;
 use Conkal\YOKSIS\REST\Utilities;
 use Conkal\YOKSIS\REST\Utilities\BasicAuth;
 use GuzzleHttp\Psr7\Request;
@@ -97,6 +98,11 @@ class YOK
     public function hazirlikDetay()
     {
         return new HazirlikDetay($this);
+    }
+
+    public function yerlestirmeVeri()
+    {
+        return new YerlestirmeVeri($this);
     }
 
 
