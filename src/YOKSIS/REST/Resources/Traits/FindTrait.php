@@ -18,7 +18,7 @@ trait FindTrait
     public function find($id)
     {
         return new $this->entity(
-            $this->client->send($this->endPoint . '/' . $id)
+            json_decode($this->client->send($this->endPoint . '/' . $id)->getBody())
         );
     }
 }

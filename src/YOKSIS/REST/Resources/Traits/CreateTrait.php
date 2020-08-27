@@ -18,6 +18,6 @@ trait CreateTrait
 {
     public function create(Entity $entity)
     {
-        return $this->client->send($this->endPoint, ['method' => 'post', 'json' => $entity->toArray()]);
+        return json_decode($this->client->send($this->endPoint, ['method' => 'post', 'json' => $entity->toArray()])->getBody());
     }
 }

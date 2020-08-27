@@ -18,7 +18,7 @@ class YerlestirmeVeri extends ResourceAbstract
      */
     public function query(array $query)
     {
-        $response = $this->client->send($this->endPoint, ['query' => $query])->content;
+        $response = json_decode($this->client->send($this->endPoint, ['query' => $query])->getBody())->content;
         $entities = [];
         if ($response) {
             foreach ($response as $item) {

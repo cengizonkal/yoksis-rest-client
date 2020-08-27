@@ -20,7 +20,7 @@ trait AllTrait
      */
     public function all()
     {
-        $response = $this->client->send($this->endPoint);
+        $response = json_decode($this->client->send($this->endPoint)->getBody());
         $entities = [];
         if ($response) {
             foreach ($response as $item) {

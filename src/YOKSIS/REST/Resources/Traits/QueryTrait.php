@@ -17,7 +17,7 @@ trait QueryTrait
 {
     public function query(array $query)
     {
-        $response = $this->client->send($this->endPoint, ['query' => $query]);
+        $response = json_decode($this->client->send($this->endPoint, ['query' => $query])->getBody());
         $entities = [];
         if ($response) {
             foreach ($response as $item) {

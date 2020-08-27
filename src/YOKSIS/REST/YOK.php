@@ -3,6 +3,7 @@
 
 namespace Conkal\YOKSIS\REST;
 
+use Conkal\YOKSIS\REST\Resources\FotografIndir;
 use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
 use Conkal\YOKSIS\REST\Resources\HazirlikTurleri;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
@@ -64,20 +65,9 @@ class YOK
             'Accept' => 'application/json',
             'Content-Type' => $options['contentType'],
         ];
-        if ($this->auth) {
-            $options = array_merge($options, $this->auth->toArray());
-        }
-
-        $request = new Request(
-            $options['method'],
-            $this->baseUri . $endPoint,
-            $headers
-        );
-
-
-        $response = $this->client->send($request, $options);
-
-        return json_decode($response->getBody());
+        $options = array_merge($options, $this->auth->toArray());
+        $request = new Request($options['method'], $this->baseUri . $endPoint, $headers);
+        return $this->client->send($request, $options);
     }
 
     public function pedagojikFormasyon()
@@ -103,6 +93,11 @@ class YOK
     public function yerlestirmeVeri()
     {
         return new YerlestirmeVeri($this);
+    }
+
+    public function fotografIndir()
+    {
+        return new FotografIndir($this);
     }
 
 
