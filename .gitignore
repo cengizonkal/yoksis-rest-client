@@ -4,3 +4,4 @@ phpunit.xml
 composer.lock
 tests/PedagojikFormasyonTest.php
 tests/YOKSIS/REST/Resources/HazirlikDetayTest.php
+tests/YOKSIS/REST/Resources/OgrenciIzinlerTest.php

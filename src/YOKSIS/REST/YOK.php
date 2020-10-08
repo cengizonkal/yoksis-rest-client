@@ -6,6 +6,7 @@ namespace Conkal\YOKSIS\REST;
 use Conkal\YOKSIS\REST\Resources\FotografIndir;
 use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
 use Conkal\YOKSIS\REST\Resources\HazirlikTurleri;
+use Conkal\YOKSIS\REST\Resources\OgrenciIzinler;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyonAlanlari;
 use Conkal\YOKSIS\REST\Resources\YerlestirmeVeri;
@@ -98,6 +99,12 @@ class YOK
     public function fotografIndir()
     {
         return new FotografIndir($this);
+    }
+
+    public function ogrenciizinler()
+    {
+        return new OgrenciIzinler($this);
+        
     }
 
 
