@@ -57,4 +57,7 @@ class YerlestirmeVeri extends Entity
     public $ekayitDonemTuru;
     public $ibHazirlikSinifi;
     public $ekayitIzin;
+    public $mezunBirimId;
+    public $diplomaNotSistemi;
+    public $mezuniyetTarihi;
 }
