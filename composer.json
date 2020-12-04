@@ -26,5 +26,8 @@
     "classmap": [
       "tests"
     ]
+  },
+  "scripts": {
+    "test": "phpunit tests"
   }
 }

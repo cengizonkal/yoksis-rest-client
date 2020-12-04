@@ -20,8 +20,10 @@ class FotografIndirTest extends TestCase
 
     public function test_it_should_query()
     {
-        $response = $this->client->fotografIndir()->find('<tckimlikno>');
+//        $response = $this->client->fotografIndir()->find('<tckimlikno>');
+//
+//        file_put_contents('tckimlikno.png', $response->getBody());
 
-        file_put_contents('tckimlikno.png', $response->getBody());
+
     }
 }
