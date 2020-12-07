@@ -17,17 +17,8 @@ abstract class Entity
     {
         if (is_object($filaments)) {
             $this->fillFromArray(get_object_vars($filaments));
-        }
-        if (is_string($filaments)) {
-            $items = explode(',', $filaments);
-            $fill = [];
-            foreach ($items as $item) {
-                $item = explode(':', $item);
-                if (count($item) == 2) {
-                    $fill[$item[0]] = $item[1];
-                }
-            }
-            $this->fillFromArray($fill);
+        }elseif(is_array($filaments)) {
+            $this->fillFromArray($filaments);
         }
     }
 
