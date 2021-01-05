@@ -6,6 +6,7 @@ composer require conkal/yoksis-rest-client
 ```
 ### Kullanım
 ```php
+require __DIR__ . '/vendor/autoload.php';
 $pass = getenv('YOKSIS_PASSWORD');
 $user = getenv('YOKSIS_USERNAME');
 $auth = new \Conkal\YOKSIS\REST\Utilities\BasicAuth($user, $pass);
