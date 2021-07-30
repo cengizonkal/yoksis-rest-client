@@ -10,6 +10,7 @@ use Conkal\YOKSIS\REST\Resources\OgrenciIzinler;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyonAlanlari;
 use Conkal\YOKSIS\REST\Resources\YerlestirmeVeri;
+use Conkal\YOKSIS\REST\Resources\YurtDisindanYatayGecis;
 use Conkal\YOKSIS\REST\Utilities;
 use Conkal\YOKSIS\REST\Utilities\BasicAuth;
 use GuzzleHttp\Psr7\Request;
@@ -104,7 +105,11 @@ class YOK
     public function ogrenciizinler()
     {
         return new OgrenciIzinler($this);
-        
+    }
+
+    public function yurtDisindanYatayGecis()
+    {
+        return new YurtDisindanYatayGecis($this);
     }
 
 

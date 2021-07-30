@@ -6,5 +6,6 @@
     <php>
         <env name="YOKSIS_USERNAME" value="username"/>
         <env name="YOKSIS_PASSWORD" value="password"/>
+        <env name="TEST_TCKNO" value="TEST_TCKNO"/>
     </php>
 </phpunit>
