@@ -3,6 +3,7 @@
 
 namespace Conkal\YOKSIS\REST;
 
+use Conkal\YOKSIS\REST\Resources\AskerlikErtelemeTalep;
 use Conkal\YOKSIS\REST\Resources\FotografIndir;
 use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
 use Conkal\YOKSIS\REST\Resources\HazirlikTurleri;
@@ -110,6 +111,11 @@ class YOK
     public function yurtDisindanYatayGecis()
     {
         return new YurtDisindanYatayGecis($this);
+    }
+
+    public function askerlikErtelemeTalep()
+    {
+        return new AskerlikErtelemeTalep($this);
     }
 
 
