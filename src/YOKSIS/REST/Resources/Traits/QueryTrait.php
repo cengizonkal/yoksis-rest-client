@@ -21,7 +21,7 @@ trait QueryTrait
         $entities = [];
         if ($response) {
             foreach ($response as $item) {
-                array_push($entities, new $this->entity($item));
+                $entities[] = new $this->entity($item);
             }
         }
         return $entities;

@@ -17,8 +17,18 @@ trait FindTrait
 {
     public function find($id)
     {
-        return new $this->entity(
-            json_decode($this->client->send($this->endPoint . '/' . $id)->getBody())
-        );
+        $items = json_decode($this->client->send($this->endPoint.'/'.$id)->getBody());
+
+        //if there is only one item in the array, return it
+        if (count($items) == 1) {
+            return new $this->entity($items[0]);
+        }
+
+        //if there is more than one item in the array, return an array of entities
+        $entities = [];
+        foreach ($items as $item) {
+            $entities[] = new $this->entity($item);
+        }
+        return $entities;
     }
 }

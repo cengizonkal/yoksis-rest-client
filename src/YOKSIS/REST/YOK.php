@@ -3,6 +3,7 @@
 
 namespace Conkal\YOKSIS\REST;
 
+use Conkal\YOKSIS\REST\Resources\AskerlikErtelemeReferans;
 use Conkal\YOKSIS\REST\Resources\AskerlikErtelemeTalep;
 use Conkal\YOKSIS\REST\Resources\FotografIndir;
 use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
@@ -69,7 +70,7 @@ class YOK
             'Content-Type' => $options['contentType'],
         ];
         $options = array_merge($options, $this->auth->toArray());
-        $request = new Request($options['method'], $this->baseUri . $endPoint, $headers);
+        $request = new Request($options['method'], $this->baseUri.$endPoint, $headers);
         return $this->client->send($request, $options);
     }
 
@@ -116,6 +117,11 @@ class YOK
     public function askerlikErtelemeTalep()
     {
         return new AskerlikErtelemeTalep($this);
+    }
+
+    public function askerlikErtelemeReferans()
+    {
+        return new AskerlikErtelemeReferans($this);
     }
 
 
