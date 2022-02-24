@@ -11,7 +11,7 @@ use Conkal\YOKSIS\REST\Resources\Traits\FindTrait;
 use Conkal\YOKSIS\REST\Resources\Traits\QueryTrait;
 
 /**
- * @method \Conkal\YOKSIS\REST\Entities\AskerlikErtelemeTalep find($id)
+ * @method \Conkal\YOKSIS\REST\Entities\AskerlikErtelemeReferans find($id)
  */
 class AskerlikErtelemeReferans extends ResourceAbstract
 {
