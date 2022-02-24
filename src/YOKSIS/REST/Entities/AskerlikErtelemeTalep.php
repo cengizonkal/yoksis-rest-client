@@ -68,5 +68,5 @@ class AskerlikErtelemeTalep extends Entity
      * @var string  Öğrenci işleri yetkilisi TC Kimlik No
      * (Zorunlu alan)
      */
-    public $imzalayanAdSoya;
+    public $imzalayanAdSoyad;
 }

@@ -26,7 +26,7 @@ class AskerlikErtelemeTalepTest extends TestCase
         $entity->teklifTuru = 'E';
         $entity->teklifNedeniNo = 501;
         $entity->imzalayanTcNo = '12345678910';
-        $entity->imzalayanAdSoya = 'Test';
+        $entity->imzalayanAdSoyad = 'Test';
 
         $this->client->askerlikErtelemeTalep()->create($entity);
     }
