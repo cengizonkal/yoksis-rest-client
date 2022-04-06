@@ -18,11 +18,17 @@ trait QueryTrait
     public function query(array $query)
     {
         $response = json_decode($this->client->send($this->endPoint, ['query' => $query])->getBody());
+
         $entities = [];
         if ($response) {
-            foreach ($response as $item) {
-                $entities[] = new $this->entity($item);
+            if (is_array($response)) {
+                foreach ($response as $item) {
+                    $entities[] = new $this->entity($item);
+                }
+            }else{
+                $entities[] = new $this->entity($response);
             }
+
         }
         return $entities;
     }

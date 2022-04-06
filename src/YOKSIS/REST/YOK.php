@@ -8,6 +8,7 @@ use Conkal\YOKSIS\REST\Resources\AskerlikErtelemeTalep;
 use Conkal\YOKSIS\REST\Resources\FotografIndir;
 use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
 use Conkal\YOKSIS\REST\Resources\HazirlikTurleri;
+use Conkal\YOKSIS\REST\Resources\KykOgrenciSorgula;
 use Conkal\YOKSIS\REST\Resources\OgrenciIzinler;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyonAlanlari;
@@ -122,6 +123,11 @@ class YOK
     public function askerlikErtelemeReferans()
     {
         return new AskerlikErtelemeReferans($this);
+    }
+
+    public function kykOgrenciSorgula()
+    {
+        return new KykOgrenciSorgula($this);
     }
 
 
