@@ -15,5 +15,5 @@ class OgrenciTranskript extends ResourceAbstract
 {
     
     protected $endPoint = 'ogrencitranskript';
-    protected $entity = \Conkal\YOKSIS\REST\Entities\YurtDisindanYatayGecis::class;
+    protected $entity = \Conkal\YOKSIS\REST\Entities\Transkript\OgrenciTranskript::class;
 }
