@@ -18,6 +18,16 @@ abstract class ResourceAbstract
         $this->client = $client;
     }
 
+    public function getEndPoint()
+    {
+        return $this->endPoint;
+    }
+
+    public function setEndPoint($endPoint)
+    {
+        $this->endPoint = $endPoint;
+    }
+
 
 
 

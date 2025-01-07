@@ -7,6 +7,8 @@ use PHPUnit\Framework\TestCase;
 
 class AskerlikErtelemeReferansTest extends TestCase
 {
+
+    private $client;
     public function setUp()
     {
         $pass = getenv('YOKSIS_PASSWORD');
