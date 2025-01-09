@@ -1,8 +1,9 @@
 <?php
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
+use Conkal\YOKSIS\REST\Entities\Entity;
 
-class Ders
+class Ders extends Entity
 {
     public $dersinKodu;
     /** @var string */

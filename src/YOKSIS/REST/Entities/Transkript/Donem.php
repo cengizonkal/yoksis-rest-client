@@ -1,9 +1,10 @@
 <?php
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
+use Conkal\YOKSIS\REST\Entities\Entity;
 
 
-class Donem
+class Donem extends Entity
 {
 
     public $donemYili = null;
@@ -19,5 +20,6 @@ class Donem
     public $donemAltiTip1 = [];
     /** @var Karar[] */
     public $donemAltiTip2 = [];
+    
 
 }
