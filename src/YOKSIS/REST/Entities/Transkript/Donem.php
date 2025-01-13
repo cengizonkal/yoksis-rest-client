@@ -15,7 +15,7 @@ class Donem extends Entity
     public $toplamAKTS = null;
     public $donemSonuDurumu = null;
     /** @var Ders[] */
-    public $dersler = [];
+    public $dersler = null;
     /** @var TransferUniversite[] */
     public $donemAltiTip1 = [];
     /** @var Karar[] */

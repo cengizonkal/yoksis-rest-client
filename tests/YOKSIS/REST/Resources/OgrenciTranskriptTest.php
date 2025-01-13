@@ -19,13 +19,15 @@ class OgrenciTranskriptTest extends TestCase
         $this->client->setAuth($auth);
     }
 
-    public function test_it_should_create_a_transcript(){
+    public function test_it_should_create_a_transcript()
+    {
 
         $transkript = new \Conkal\YOKSIS\REST\Entities\Transkript\OgrenciTranskript();
 
         $transkript->ogrenciId = '123456';
         $transkript->tcKimlikNo = getenv('TEST_TCKNO');
         $transkript->birimId = '123456';
+
         $transkript->donemler = [
             new \Conkal\YOKSIS\REST\Entities\Transkript\Donem([
                 'donemYili' => '2018-2019',
@@ -37,47 +39,54 @@ class OgrenciTranskriptTest extends TestCase
                 'donemSonuDurumu' => '1',
                 'dersler' => [
                     new \Conkal\YOKSIS\REST\Entities\Transkript\Ders([
-                        'dersKodu' => 'MAT101',
-                        'dersAdi' => 'Matematik',
-                        'kredi' => '5',
+                        'dersinKodu' => 'MAT101',
+                        'dersinAdi' => 'Matematik',
+                        'ortalamayaDahilmi' => '1',
+                        'dersinStatusu' => '1',
+                        'ogretimDili' => 'TR',
+                        'dersAlinmaTuru' => '1',
+                        'teorikSaati' => '3',
+                        'uygulamaSaati' => '2',
+                        'yerel' => '0',
                         'akts' => '5',
-                        'harfNotu' => 'AA',
-                        'notu' => '4.0',
-                        'donemIciDurumu' => '1',
-                        'donemSonuDurumu' => '1',
+                        'not' => 'AA',
+                        'hamBasariNotu' => '4.0',
+                        'puan' => '100',
+                        'aciklama' => 'Dersi başarıyla tamamladı',
+                        'dersinAmaci' => 'Matematik öğrenmek',
+                        'dersinIcerigi' => 'Matematik',
+                        'dersDonemi' => '1',
+                        'dersGecmeDurumu' => '1',
+                        'digerDilDers' => '0',
                     ]),
-                    new \Conkal\YOKSIS\REST\Entities\Transkript\Ders([
-                        'dersKodu' => 'FIZ101',
-                        'dersAdi' => 'Fizik',
-                        'kredi' => '5',
-                        'akts' => '5',
-                        'harfNotu' => 'AA',
-                        'notu' => '4.0',
-                        'donemIciDurumu' => '1',
-                        'donemSonuDurumu' => '1',
-                    ]),
-                ],
-                'donemAltiTip1' => [
-                    new \Conkal\YOKSIS\REST\Entities\Transkript\TransferUniversite([
-                        'universiteAdi' => 'Harvard',
-                        'fakulteAdi' => 'Fizik',
-                        'bolumAdi' => 'Fizik',
-                        'donemYili' => '2018-2019',
-                        'donemNumarasi' => '1',
-                        'kredi' => '5',
-                        'akts' => '5',
-                        'harfNotu' => 'AA',
-                        'notu' => '4.0',
-                    ]),
-                ],
+
+                ]
             ])
         ];
 
+        $transkript->notBaremleri = [
+            "notBaremi"=>'AA',
+            "notBaremiEng"=>'Excellent',
+            "not" => [
+                new \Conkal\YOKSIS\REST\Entities\Transkript\NotDTO([
+                    'aciklama' => 'AA',
+                    'notBaremiAciklama' => 'Mükemmel',
+                    'notBaremiAciklamaEng' => 'Excellent',
+                    'notBaremiPuan' => '100',
+                    'notBaremiKatsayi' => '4.0',
+                ])
+            ]
+        ];
+
+
+        var_dump($transkript->toArray());
+
         $this->client->ogrenciTranskript()->create($transkript);
-        
+
     }
 
-    public function test_it_should_get_transkript(){
+    public function test_it_should_get_transkript()
+    {
         $transkript = $this->client->ogrenciTranskript()->find(123456);
         var_dump($transkript);
         $this->assertNotNull($transkript);

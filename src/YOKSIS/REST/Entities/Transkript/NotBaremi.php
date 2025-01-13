@@ -8,8 +8,10 @@ class NotBaremi
 
     /** @var NotDTO[] */
     public $not = [];
+
     /** @var string */
     public $notBaremi;
+    
     /** @var string */
     public $notBaremiEng;
 }

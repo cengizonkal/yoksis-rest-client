@@ -2,8 +2,8 @@
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
 
-
-class NotDTO
+use Conkal\YOKSIS\REST\Entities\Entity;
+class NotDTO extends Entity
 {
 
     /** @var string */
