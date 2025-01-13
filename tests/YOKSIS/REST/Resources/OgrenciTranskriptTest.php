@@ -70,10 +70,10 @@ class OgrenciTranskriptTest extends TestCase
             "not" => [
                 new \Conkal\YOKSIS\REST\Entities\Transkript\NotDTO([
                     'aciklama' => 'AA',
-                    'notBaremiAciklama' => 'Mükemmel',
-                    'notBaremiAciklamaEng' => 'Excellent',
-                    'notBaremiPuan' => '100',
-                    'notBaremiKatsayi' => '4.0',
+                    'aciklamaEng' => 'Mükemmel',
+                    'katsayi' => '4',
+                    'not-' => '100',
+                    'puan' => '4.0',
                 ])
             ]
         ];
