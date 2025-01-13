@@ -72,7 +72,7 @@ class OgrenciTranskriptTest extends TestCase
                     'aciklama' => 'AA',
                     'aciklamaEng' => 'Mükemmel',
                     'katsayi' => '4',
-                    'not-' => '100',
+                    'not' => '100',
                     'puan' => '4.0',
                 ])
             ]
