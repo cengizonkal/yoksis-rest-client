@@ -1,5 +1,23 @@
 # Değişiklik Günlüğü
 
+## [Yayınlanmadı]
+
+### Eklenenler
+- Kütüphaneye özel istisnalar (`Conkal\YOKSIS\REST\Exceptions`): `AuthenticationException`, `NotFoundException`,
+  `ValidationException`, `RateLimitException`, `RequestFailedException`, `ServerErrorException`, `ConnectionException`.
+  Hepsi `YoksisException` arayüzünü uygular. HTTP hatalarında durum kodu, yanıt gövdesi ve servisin hata mesajı
+  alınabilir. Guzzle'ın istisnalarından türedikleri için mevcut `catch` blokları bozulmaz.
+- Sayfalı yanıtlar için `Page` sınıfı; `YerlestirmeVeri` kaynağına `paginate()` (toplam kayıt/sayfa bilgisiyle) ve
+  tüm sayfaları sırayla çeken `cursor()` metotları.
+- `YOK::create()` ve `ClientFactory`: zaman aşımı, geçici hatalarda üstel bekleme ile yeniden deneme
+  (yalnızca GET/HEAD) ve kişisel veri içermeyen PSR-3 loglama.
+- Laravel entegrasyonu: service provider (paket keşfiyle otomatik kayıt), `Yoksis` facade'ı ve
+  yayınlanabilir `config/yoksis.php`.
+
+### Değişenler
+- `psr/log` çalışma zamanı bağımlılığı olarak eklendi.
+- `YerlestirmeVeri::query()`, servis sayfalamadan düz liste döndürürse kayıtları artık boş dizi yerine döndürüyor.
+
 ## [1.0.0] - 2026-09-25
 
 Bu sürüm geriye uyumsuz değişiklikler içerir (bkz. *Değişenler*). `^0.2` kısıtını kullanan projeler
@@ -31,4 +49,5 @@ otomatik olarak yükseltilmez; yükseltmek için `composer require conkal/yoksis
 - Transkript alt sınıflarının (`Tez`, `NotBaremi`, `Karar`, ...) diziden doldurulamaması.
 - `KykOgrenciSorgula` kaynağında yanlış erişim belirleyicileri.
 
+[Yayınlanmadı]: https://github.com/cengizonkal/yoksis-rest-client/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/cengizonkal/yoksis-rest-client/compare/v0.2.1...v1.0.0

@@ -2,7 +2,16 @@
   "name": "conkal/yoksis-rest-client",
   "description": "YÖKSİS (Yükseköğretim Bilgi Sistemi) OBS REST servisleri için PHP istemcisi",
   "type": "library",
-  "keywords": ["yoksis", "yok", "obs", "rest", "client", "api", "universite"],
+  "keywords": [
+    "yoksis",
+    "yok",
+    "obs",
+    "rest",
+    "client",
+    "api",
+    "universite",
+    "laravel"
+  ],
   "homepage": "https://github.com/cengizonkal/yoksis-rest-client",
   "license": "MIT",
   "authors": [
@@ -18,10 +27,18 @@
   "require": {
     "php": ">=7.2.5",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5"
+    "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5",
+    "psr/log": "^1.0 || ^2.0 || ^3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.5 || ^9.6"
+    "illuminate/config": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
+    "illuminate/container": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
+    "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
+    "phpunit/phpunit": "^8.5 || ^9.6",
+    "vlucas/phpdotenv": "^3.3 || ^4.0 || ^5.4"
+  },
+  "suggest": {
+    "illuminate/support": "Laravel entegrasyonu için (service provider ve facade)"
   },
   "autoload": {
     "psr-4": {
@@ -39,5 +56,15 @@
   },
   "config": {
     "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Conkal\\YOKSIS\\Laravel\\YoksisServiceProvider"
+      ],
+      "aliases": {
+        "Yoksis": "Conkal\\YOKSIS\\Laravel\\Facades\\Yoksis"
+      }
+    }
   }
 }

@@ -16,7 +16,7 @@ composer test
 1. `src/YOKSIS/REST/Entities` altına servisin alanlarını içeren, `Entity` sınıfından türeyen bir sınıf ekleyin.
 2. `src/YOKSIS/REST/Resources` altına `ResourceAbstract` sınıfından türeyen bir kaynak sınıfı ekleyin.
    `$endPoint` ve `$entity` alanlarını tanımlayıp gereken trait'leri (`AllTrait`, `FindTrait`, `QueryTrait`,
-   `CreateTrait`, `DeleteTrait`) kullanın.
+   `CreateTrait`, `DeleteTrait`, sayfalı servisler için `PaginatesTrait`) kullanın.
 3. `YOK` sınıfına kaynağı döndüren bir metot ekleyin.
 4. `tests/Unit` altına sahte (mock) HTTP yanıtlarıyla çalışan testler ekleyin.
 5. `readme.md` dosyasındaki servis tablosunu ve `CHANGELOG.md` dosyasını güncelleyin.
