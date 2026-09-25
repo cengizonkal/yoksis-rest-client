@@ -3,6 +3,22 @@
 ## [Yayınlanmadı]
 
 ### Eklenenler
+- YÖK "REST Servisler Yardım Dökümanı" (sürüm 2.0) kapsamındaki eksik servisler:
+  - Ceza alan öğrenciler (`ogrenciCezalar()`) ve ceza türleri (`cezaTurleri()`).
+  - Mezunlar (`mezunlar()`, sayfalı), duyurular (`duyurular()`), üniversiteler (`universiteler()`),
+    son başarılı teyitleşme (`teyitlesme()->sonBasarili()`), yatay geçiş ile gidenler (`yatayGecisler()`).
+  - ASAL: askerlik durum sorgulama (`askerlikDurum()->sorgula()`), talep sonucu sorgulama
+    (`askerlikErtelemeTalep()->sonuc()`, HTTP 206 "beklemede" desteğiyle) ve talep silme.
+  - Toplu fotoğraf indirme (`fotografIndir()->toplu()` / `topluKaydet()`), vakıf öğrenim ücreti bildirimi
+    (`vakifOgrenimUcreti()->bildir()`).
+  - Transkripti T.C. kimlik no ve birim id ile getirme (`ogrenciTranskript()->findByTcKimlikNo()`).
+  - MEB mezuniyet detayı (`mebMezunDetay()`), Sağlık Bakanlığı tescil bilgisi (`saglikBakanligiTescil()`).
+  - KYK: tekli (`sorgula()`), toplu (`topluSorgula()`, 100'lük parçalara bölünür) ve öğrenci sayısı sorguları.
+  - Öğrenci iletişim bilgileri (`ogrenciIletisimBilgileri()`).
+  - `update()` (PUT): ceza, izin, hazırlık detay, pedagojik formasyon ve yurt dışından yatay geçiş kayıtları için.
+  - `ogrenciIzinler()->find()`.
+- Dokümandaki kod listeleri için sabitler: `DonemTuru`, `IzinTuru`, `CezaMahkemeIptal`, `HazirlikTuru`,
+  `Askerlik\{ReferansTuru, TeklifTuru, TalepSonucu, DurumKodu, ErtelemeDurumu, IslemSonucKodu}`, `Kyk\KrediTuru`.
 - Kütüphaneye özel istisnalar (`Conkal\YOKSIS\REST\Exceptions`): `AuthenticationException`, `NotFoundException`,
   `ValidationException`, `RateLimitException`, `RequestFailedException`, `ServerErrorException`, `ConnectionException`.
   Hepsi `YoksisException` arayüzünü uygular. HTTP hatalarında durum kodu, yanıt gövdesi ve servisin hata mesajı
@@ -17,6 +33,13 @@
 ### Değişenler
 - `psr/log` çalışma zamanı bağımlılığı olarak eklendi.
 - `YerlestirmeVeri::query()`, servis sayfalamadan düz liste döndürürse kayıtları artık boş dizi yerine döndürüyor.
+
+### Düzeltilenler
+- `yurtDisindanYatayGecis()`: servisin `{"returnCode", "data", "count"}` zarfı açılmadığı için `all()`, `query()` ve
+  `find()` kayıtlar yerine zarfın kendisini döndürüyordu.
+- Sayfalı yanıtlarda servisin kullandığı `firstPage`/`lastPage` alanları artık okunuyor.
+- Laravel testleri PHP 7.2'de uyumsuz `vlucas/phpdotenv` sürümü yüzünden başarısız oluyordu; geliştirme bağımlılığı
+  `laravel/framework` olarak değiştirildi.
 
 ## [1.0.0] - 2026-09-25
 

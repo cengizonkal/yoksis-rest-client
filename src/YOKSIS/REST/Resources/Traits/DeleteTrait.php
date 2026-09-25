@@ -11,6 +11,6 @@ trait DeleteTrait
      */
     public function delete($id)
     {
-        return $this->request($this->endPoint . '/' . rawurlencode((string)$id), ['method' => 'DELETE']);
+        return $this->request($this->path($id), ['method' => 'DELETE']);
     }
 }

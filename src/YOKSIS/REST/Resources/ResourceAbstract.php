@@ -24,6 +24,21 @@ abstract class ResourceAbstract
      */
     protected $entity;
 
+    /**
+     * Servis yanıtları {"returnCode": 1, "data": ..., "count": n} zarfıyla mı dönüyor?
+     * true ise request() yalnızca "data" alanını döndürür.
+     *
+     * @var bool
+     */
+    protected $wrapsResponses = false;
+
+    /**
+     * update() kaydın id'sini yola ekler mi (PUT endpoint/{id})? false ise PUT endpoint.
+     *
+     * @var bool
+     */
+    protected $updateUsesIdInPath = true;
+
     public function __construct(YOK $client)
     {
         $this->client = $client;
@@ -57,7 +72,19 @@ abstract class ResourceAbstract
         if (json_last_error() !== JSON_ERROR_NONE) {
             return $body;
         }
+        if ($this->wrapsResponses && is_object($decoded) && property_exists($decoded, 'returnCode') && property_exists($decoded, 'data')) {
+            return $decoded->data;
+        }
         return $decoded;
+    }
+
+    /**
+     * @param string $path Endpoint'e eklenecek yol parçası (URL kodlanır)
+     * @return string
+     */
+    protected function path($path)
+    {
+        return $this->endPoint . '/' . rawurlencode((string)$path);
     }
 
     /**
@@ -67,6 +94,24 @@ abstract class ResourceAbstract
     protected function hydrate($data)
     {
         return new $this->entity($data);
+    }
+
+    /**
+     * hydrateMany() ile aynı, ancak kaynağın varsayılan entity sınıfı yerine verilen sınıfı kullanır.
+     *
+     * @param mixed $data
+     * @param string $class
+     * @return Entity[]
+     */
+    protected function hydrateManyAs($data, $class)
+    {
+        $default = $this->entity;
+        $this->entity = $class;
+        try {
+            return $this->hydrateMany($data);
+        } finally {
+            $this->entity = $default;
+        }
     }
 
     /**

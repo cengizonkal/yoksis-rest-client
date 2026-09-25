@@ -34,4 +34,34 @@ class FotografIndir extends ResourceAbstract
         }
         return $written;
     }
+
+    /**
+     * Belirtilen yıl ve türdeki tüm yerleşen öğrencilerin fotoğraflarını zip olarak döndürür.
+     * Büyük olabileceği için doğrudan dosyaya yazmak isterseniz topluKaydet() kullanın.
+     *
+     * @param int $yil
+     * @param string $tur Constants\DonemTuru değerlerinden biri (YKS, DGS, ...)
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function toplu($yil, $tur)
+    {
+        return $this->client->send('toplufotografindir', ['query' => ['yil' => (int)$yil, 'tur' => (string)$tur]]);
+    }
+
+    /**
+     * Toplu fotoğraf zip dosyasını belleğe almadan doğrudan diske yazar.
+     *
+     * @param int $yil
+     * @param string $tur
+     * @param string $path Kaydedilecek .zip dosyasının yolu
+     * @return string Kaydedilen dosyanın yolu
+     */
+    public function topluKaydet($yil, $tur, $path)
+    {
+        $this->client->send('toplufotografindir', [
+            'query' => ['yil' => (int)$yil, 'tur' => (string)$tur],
+            'sink' => $path,
+        ]);
+        return $path;
+    }
 }

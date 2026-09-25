@@ -3,16 +3,28 @@
 
 namespace Conkal\YOKSIS\REST;
 
+use Conkal\YOKSIS\REST\Resources\AskerlikDurumSorgula;
 use Conkal\YOKSIS\REST\Resources\AskerlikErtelemeReferans;
 use Conkal\YOKSIS\REST\Resources\AskerlikErtelemeTalep;
+use Conkal\YOKSIS\REST\Resources\CezaTurleri;
+use Conkal\YOKSIS\REST\Resources\Duyurular;
 use Conkal\YOKSIS\REST\Resources\FotografIndir;
 use Conkal\YOKSIS\REST\Resources\HazirlikDetay;
 use Conkal\YOKSIS\REST\Resources\HazirlikTurleri;
 use Conkal\YOKSIS\REST\Resources\KykOgrenciSorgula;
+use Conkal\YOKSIS\REST\Resources\MebMezunDetay;
+use Conkal\YOKSIS\REST\Resources\Mezunlar;
+use Conkal\YOKSIS\REST\Resources\OgrenciCezalar;
+use Conkal\YOKSIS\REST\Resources\OgrenciIletisimBilgileri;
 use Conkal\YOKSIS\REST\Resources\OgrenciIzinler;
 use Conkal\YOKSIS\REST\Resources\OgrenciTranskript;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyonAlanlari;
+use Conkal\YOKSIS\REST\Resources\SaglikBakanligiTescil;
+use Conkal\YOKSIS\REST\Resources\Teyitlesme;
+use Conkal\YOKSIS\REST\Resources\Universiteler;
+use Conkal\YOKSIS\REST\Resources\VakifOgrenimUcreti;
+use Conkal\YOKSIS\REST\Resources\YatayGecisler;
 use Conkal\YOKSIS\REST\Resources\YerlestirmeVeri;
 use Conkal\YOKSIS\REST\Resources\YurtDisindanYatayGecis;
 use Conkal\YOKSIS\REST\Exceptions\ExceptionFactory;
@@ -222,5 +234,65 @@ class YOK
     public function ogrenciTranskript()
     {
         return new OgrenciTranskript($this);
+    }
+
+    public function askerlikDurum()
+    {
+        return new AskerlikDurumSorgula($this);
+    }
+
+    public function cezaTurleri()
+    {
+        return new CezaTurleri($this);
+    }
+
+    public function duyurular()
+    {
+        return new Duyurular($this);
+    }
+
+    public function mebMezunDetay()
+    {
+        return new MebMezunDetay($this);
+    }
+
+    public function mezunlar()
+    {
+        return new Mezunlar($this);
+    }
+
+    public function ogrenciCezalar()
+    {
+        return new OgrenciCezalar($this);
+    }
+
+    public function ogrenciIletisimBilgileri()
+    {
+        return new OgrenciIletisimBilgileri($this);
+    }
+
+    public function saglikBakanligiTescil()
+    {
+        return new SaglikBakanligiTescil($this);
+    }
+
+    public function teyitlesme()
+    {
+        return new Teyitlesme($this);
+    }
+
+    public function universiteler()
+    {
+        return new Universiteler($this);
+    }
+
+    public function vakifOgrenimUcreti()
+    {
+        return new VakifOgrenimUcreti($this);
+    }
+
+    public function yatayGecisler()
+    {
+        return new YatayGecisler($this);
     }
 }
