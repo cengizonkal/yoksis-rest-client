@@ -16,7 +16,7 @@ trait FindTrait
      */
     public function find($id)
     {
-        $entities = $this->hydrateMany($this->request($this->endPoint . '/' . rawurlencode((string)$id)));
+        $entities = $this->hydrateMany($this->request($this->path($id)));
 
         if (count($entities) === 0) {
             return null;

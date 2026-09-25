@@ -8,6 +8,7 @@ use Conkal\YOKSIS\REST\Resources\Traits\CreateTrait;
 use Conkal\YOKSIS\REST\Resources\Traits\DeleteTrait;
 use Conkal\YOKSIS\REST\Resources\Traits\FindTrait;
 use Conkal\YOKSIS\REST\Resources\Traits\QueryTrait;
+use Conkal\YOKSIS\REST\Resources\Traits\UpdateTrait;
 
 /**
  * Class PedagojikFormasyon
@@ -18,7 +19,7 @@ use Conkal\YOKSIS\REST\Resources\Traits\QueryTrait;
  */
 class PedagojikFormasyon extends ResourceAbstract
 {
-    use FindTrait, AllTrait, CreateTrait, DeleteTrait, QueryTrait;
+    use FindTrait, AllTrait, CreateTrait, UpdateTrait, DeleteTrait, QueryTrait;
 
     protected $endPoint = 'pedagojikFormasyon';
     protected $entity = \Conkal\YOKSIS\REST\Entities\PedagojikFormasyon::class;

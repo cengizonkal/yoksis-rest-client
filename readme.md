@@ -55,20 +55,45 @@ $client = new YOK(YOK::TEST_URI, $http, new BasicAuth($user, $pass));
 
 ### Desteklenen servisler
 
-| Erişim | Servis | Metotlar |
-|---|---|---|
-| `$client->pedagojikFormasyon()` | `pedagojikFormasyon` | all, query, find, create, delete |
-| `$client->pedagojikFormasyonAlanlari()` | `pedagojikformasyonalanlari` | all |
-| `$client->hazirlikTurleri()` | `hazirlikturleri` | all |
-| `$client->hazirlikDetay()` | `hazirlikdetay` | all, query, find, create, delete |
-| `$client->yerlestirmeVeri()` | `yerlestirmeveri` | query, paginate, cursor |
-| `$client->fotografIndir()` | `fotografindir` | find, save |
-| `$client->ogrenciIzinler()` | `ogrenciizinler` | query, create, delete |
-| `$client->yurtDisindanYatayGecis()` | `yurtDisindanYatayGecis` | all, query, find, create, delete |
-| `$client->askerlikErtelemeTalep()` | `askerlikErtelemeTalep` | query, create |
-| `$client->askerlikErtelemeReferans()` | `askerlikErtelemeReferans` | find |
-| `$client->kykOgrenciSorgula()` | `kykogrencisorgula` | query |
-| `$client->ogrenciTranskript()` | `ogrencitranskript` | find, create, delete |
+Servisler YÖK'ün "REST Servisler Yardım Dökümanı" (sürüm 2.0) esas alınarak hazırlanmıştır.
+Bölüm numaraları dokümandakilerdir.
+
+| Bölüm | Erişim | Servis | Metotlar |
+|---|---|---|---|
+| 4 | `$client->ogrenciCezalar()` | `ogrencicezalar` | all, query, find, create, update, delete |
+| 4 | `$client->cezaTurleri()` | `cezaturleri` | all |
+| 5 | `$client->ogrenciIzinler()` | `ogrenciizinler` | query, find, create, update, delete |
+| 6 | `$client->mezunlar()` | `mezunlar` | query, paginate, cursor |
+| 7 | `$client->duyurular()` | `duyurular` | all |
+| 8 | `$client->universiteler()` | `universiteler` | all |
+| 9 | `$client->teyitlesme()` | `sonbasariliteyitlesme` | sonBasarili |
+| 10 | `$client->hazirlikTurleri()` | `hazirlikturleri` | all |
+| 10 | `$client->hazirlikDetay()` | `hazirlikdetay` | all, query, find, create, update, delete |
+| 11 | `$client->pedagojikFormasyonAlanlari()` | `pedagojikformasyonalanlari` | all |
+| 11 | `$client->pedagojikFormasyon()` | `pedagojikFormasyon` | all, query, find, create, update, delete |
+| 12 | `$client->askerlikDurum()` | `askerlikDurumSorgula` | sorgula |
+| 12 | `$client->askerlikErtelemeReferans()` | `askerlikErtelemeReferans` | find |
+| 12 | `$client->askerlikErtelemeTalep()` | `askerlikErtelemeTalep` | create, sonuc, delete, query |
+| 13 | `$client->yatayGecisler()` | `yatayGecisListele` | query, yilaGore |
+| 14 | `$client->yerlestirmeVeri()` | `yerlestirmeveri` | query, paginate, cursor |
+| 14 | `$client->fotografIndir()` | `fotografindir`, `toplufotografindir` | find, save, toplu, topluKaydet |
+| 14 | `$client->vakifOgrenimUcreti()` | `vakifogrenimucreti` | bildir |
+| 15 | `$client->ogrenciTranskript()` | `ogrencitranskript` | find, findByTcKimlikNo, create, delete |
+| 16 | `$client->mebMezunDetay()` | `mebmezundetaysorgula` | sorgula |
+| 17 | `$client->saglikBakanligiTescil()` | `saglikbakanligitescilsorgula` | sorgula |
+| 18 | `$client->kykOgrenciSorgula()` | `kykogrencisorgula` ve ilgili servisler | sorgula, query, topluSorgula, ogrenciSayisi, ogrenciSayisiYilaGore |
+| 19 | `$client->yurtDisindanYatayGecis()` | `yurtDisindanYatayGecis` | all, query, find, create, update, delete |
+| 20 | `$client->ogrenciIletisimBilgileri()` | `ogrenciIletisimBilgi` | create, update, delete, deleteByTcKimlikNo |
+
+Dokümandaki kod listeleri `Conkal\YOKSIS\Constants` altında sabit olarak bulunur: `DonemTuru` (YKS, DGS, ...),
+`OgrenciIzin\IzinTuru`, `Ceza\CezaMahkemeIptal`, `HazirlikDetay\HazirlikTuru`, `Askerlik\*` (referans türleri,
+durum ve sonuç kodları) ve `Kyk\KrediTuru`.
+
+> **Doğrulanmamış varsayımlar:** Dokümanda yolu ya da parametre yeri açıkça gösterilmeyen üç çağrı diğer
+> servislerle aynı kalıba göre yazılmıştır: `pedagojikFormasyon()->update()` (`PUT pedagojikFormasyon/{id}`),
+> `ogrenciIzinler()->find()` (`GET ogrenciizinler/{id}`) ve `vakifOgrenimUcreti()->bildir()` (parametreler hem
+> sorgu dizesinde hem gövdede gönderilir). İzin türleri servisinin (`izinTurleriniListele`) yolu dokümanda
+> olmadığından eklenmedi; değerler `IzinTuru` sabitlerindedir.
 
 Listede olmayan bir servisi ham olarak çağırmak için `send()` kullanılabilir:
 
@@ -141,8 +166,10 @@ foreach ($client->yerlestirmeVeri()->cursor(['tur' => 'YKS', 'yil' => '2019'], 5
 }
 ```
 
-Sayfa parametreleri Spring Data biçimindedir (`page` 0'dan başlar, `size` sayfa boyutu).
-Servis sayfa parametresini yok sayarsa `cursor()` sonsuz döngüye girmez, durur.
+Parametreler: `yil` ve `tur` zorunludur (`tur` için `Constants\DonemTuru`). İsteğe bağlı olarak `tcKimlikNo`,
+`ekayitOlanlar` (`'true'`/`'false'`) ve `ekayitTarihi` (dd/MM/yyyy) ile filtrelenebilir. `page` 0'dan başlar
+(varsayılan 0), `size` sayfa boyutudur (varsayılan 1000). Servis sayfa parametresini yok sayarsa `cursor()`
+sonsuz döngüye girmez, durur.
 
 ### Hazırlık Detay
 
@@ -160,6 +187,41 @@ $detay->birimId = '<birim id>';
 
 // kaydet
 $client->hazirlikDetay()->create($detay);
+```
+
+### Ceza Alan Öğrenciler
+
+```php
+use Conkal\YOKSIS\Constants\Ceza\CezaMahkemeIptal;
+use Conkal\YOKSIS\REST\Entities\OgrenciCeza;
+
+$ceza = new OgrenciCeza([
+    'tcKimlikNo' => '<tckno>',
+    'birimID' => '<birim id>',
+    'cezaID' => 1, // $client->cezaTurleri()->all() ile alınan kod
+    'yonetmelikMaddeFikra' => '2',
+    'cezaMahkemeIptalMi' => CezaMahkemeIptal::HAYIR,
+    'cezaTarihi' => '12/07/2017',
+    'cezaBaslangicTarihi' => '13/07/2017',
+    'cezaBitisTarihi' => '13/09/2018',
+]);
+$sonuc = $client->ogrenciCezalar()->create($ceza); // "ID:96375"
+
+$cezalar = $client->ogrenciCezalar()->query(['tcKimlikNo' => '<tckno>']);
+$cezalar[0]->cezaBitisTarihi = '18/07/2018';
+$client->ogrenciCezalar()->update($cezalar[0]);
+```
+
+### Mezunlar, Duyurular, Üniversiteler, Teyitleşme
+
+```php
+foreach ($client->mezunlar()->cursor() as $mezun) {
+    echo $mezun->tcKimlikNo, ' ', $mezun->adi, ' ', $mezun->soyadi, PHP_EOL;
+}
+
+$duyurular = $client->duyurular()->all();
+$universiteler = $client->universiteler()->all();
+$teyit = $client->teyitlesme()->sonBasarili(); // $teyit->sonBasariliTeyitlesmeTarihi
 ```
 
 ### Öğrenci İzinleri
@@ -196,13 +258,56 @@ $talep->teklifNedeniNo = 501;
 $talep->imzalayanTcNo = '<yetkili tckno>';
 $talep->imzalayanAdSoyad = '<yetkili ad soyad>';
 
-$client->askerlikErtelemeTalep()->create($talep);
+$yanit = $client->askerlikErtelemeTalep()->create($talep);
+
+// 3-15 gün içinde sonuçlanır; günde en fazla bir kez sorgulanması önerilir.
+$sonuc = $client->askerlikErtelemeTalep()->sonuc($yanit->talepKayitUid);
+if ($sonuc->beklemedeMi()) {
+    // henüz sonuçlanmadı (HTTP 206)
+} elseif ($sonuc->sonuc === \Conkal\YOKSIS\Constants\Askerlik\TalepSonucu::ERTELEME) {
+    echo $sonuc->ertBitTarihi;
+}
+```
+
+Talepten önce öğrencinin askerlik durumunu sorgulayabilirsiniz:
+
+```php
+$durum = $client->askerlikDurum()->sorgula('<tckno>');
+// $durum->askerlikDurumKod, $durum->askerlikErtDurumKod (bkz. Constants\Askerlik\DurumKodu, ErtelemeDurumu)
 ```
 
 ### KYK Öğrenci Sorgulama
 
 ```php
-$sonuc = $client->kykOgrenciSorgula()->query(['tcKimlikNo' => '<tckno>']);
+$kyk = $client->kykOgrenciSorgula();
+
+$ogrenci = $kyk->sorgula('<tckno>'); // $ogrenci->krediBursDurumu->ad, $ogrenci->yurtBarinmaDurumu->ad
+$liste = $kyk->topluSorgula($tcKimlikNolar); // 100'den fazlaysa otomatik parçalara bölünür
+$sayilar = $kyk->ogrenciSayisi('<birim id>');
+$yillik = $kyk->ogrenciSayisiYilaGore('<birim id>', '<birim tür>', 2024);
+```
+
+### MEB ve Sağlık Bakanlığı
+
+```php
+$liseMezuniyeti = $client->mebMezunDetay()->sorgula('<tckno>');
+$tescil = $client->saglikBakanligiTescil()->sorgula('<tckno>');
+```
+
+### Yurt Dışından Yatay Geçiş ve Öğrenci İletişim Bilgileri
+
+Bu servislerin `{"returnCode", "data", "count"}` zarfı kütüphane tarafından açılır:
+
+```php
+use Conkal\YOKSIS\REST\Entities\OgrenciIletisimBilgi;
+
+$kayitlar = $client->yurtDisindanYatayGecis()->query(['tcKimlikNo' => '<tckno>']);
+
+$yanit = $client->ogrenciIletisimBilgileri()->create(new OgrenciIletisimBilgi([
+    'tcKimlikNo' => '<tckno>',
+    'birimId' => '<birim id>',
+    'ePosta' => 'ogrenci@example.com',
+])); // $yanit->id
 ```
 
 ### Fotoğraf İndirme
@@ -210,6 +315,9 @@ $sonuc = $client->kykOgrenciSorgula()->query(['tcKimlikNo' => '<tckno>']);
 ```php
 // dosyaya kaydet
 $client->fotografIndir()->save('<tckno>', '/tmp/<tckno>.jpg');
+
+// bir yerleştirmenin tüm fotoğrafları (zip, belleğe alınmadan diske yazılır)
+$client->fotografIndir()->topluKaydet(2024, \Conkal\YOKSIS\Constants\DonemTuru::YKS, '/tmp/fotograflar.zip');
 
 // ya da ham yanıtı al
 $response = $client->fotografIndir()->find('<tckno>');
@@ -239,6 +347,7 @@ $transkript->donemler = [
 $client->ogrenciTranskript()->create($transkript);
 
 $kayit = $client->ogrenciTranskript()->find('<ogrenci id>');
+$kayit = $client->ogrenciTranskript()->findByTcKimlikNo('<tckno>', '<birim id>');
 ```
 
 ## Hata yönetimi

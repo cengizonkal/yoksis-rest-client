@@ -8,7 +8,7 @@ use Conkal\YOKSIS\REST\Entities\Entity;
  * Sayfalı bir servis yanıtı: kayıtlar ve sayfa bilgileri.
  *
  * YÖKSİS'in sayfalı servisleri Spring Data biçiminde yanıt döndürür
- * (content, totalElements, totalPages, number, size, first, last).
+ * (content, totalElements, totalPages, number, size, first/firstPage, last/lastPage).
  * Yanıtta bulunmayan bilgiler için getter'lar null döndürür.
  *
  * Dizi gibi kullanılabilir: foreach, count() ve $page[0] desteklenir.
@@ -80,8 +80,10 @@ class Page implements \IteratorAggregate, \Countable, \ArrayAccess, \JsonSeriali
      */
     public function isFirst()
     {
-        if (isset($this->raw->first)) {
-            return (bool)$this->raw->first;
+        foreach (['first', 'firstPage'] as $field) {
+            if (isset($this->raw->{$field})) {
+                return (bool)$this->raw->{$field};
+            }
         }
         $number = $this->getPageNumber();
         return $number === null || $number === 0;
@@ -95,8 +97,10 @@ class Page implements \IteratorAggregate, \Countable, \ArrayAccess, \JsonSeriali
      */
     public function isLast()
     {
-        if (isset($this->raw->last)) {
-            return (bool)$this->raw->last;
+        foreach (['last', 'lastPage'] as $field) {
+            if (isset($this->raw->{$field})) {
+                return (bool)$this->raw->{$field};
+            }
         }
         $number = $this->getPageNumber();
         $total = $this->getTotalPages();

@@ -16,4 +16,24 @@ class OgrenciTranskript extends ResourceAbstract
 
     protected $endPoint = 'ogrencitranskript';
     protected $entity = \Conkal\YOKSIS\REST\Entities\Transkript\OgrenciTranskript::class;
+
+    /**
+     * Öğrencinin transkriptini T.C. kimlik numarası ve birim id ile getirir
+     * (getOgrenciTranskriptByTcAndBirimId).
+     *
+     * @param string|int $tcKimlikNo
+     * @param string|int $birimId
+     * @return \Conkal\YOKSIS\REST\Entities\Transkript\OgrenciTranskript|\Conkal\YOKSIS\REST\Entities\Transkript\OgrenciTranskript[]|null
+     */
+    public function findByTcKimlikNo($tcKimlikNo, $birimId)
+    {
+        $entities = $this->hydrateMany($this->request(
+            $this->path($tcKimlikNo) . '/' . rawurlencode((string)$birimId)
+        ));
+
+        if (count($entities) === 0) {
+            return null;
+        }
+        return count($entities) === 1 ? $entities[0] : $entities;
+    }
 }
