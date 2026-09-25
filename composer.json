@@ -1,7 +1,9 @@
 {
   "name": "conkal/yoksis-rest-client",
-  "description": "YOKSIS rest api client",
+  "description": "YÖKSİS (Yükseköğretim Bilgi Sistemi) OBS REST servisleri için PHP istemcisi",
   "type": "library",
+  "keywords": ["yoksis", "yok", "obs", "rest", "client", "api", "universite"],
+  "homepage": "https://github.com/cengizonkal/yoksis-rest-client",
   "license": "MIT",
   "authors": [
     {
@@ -9,13 +11,17 @@
       "email": "onkal.cengiz@gmail.com"
     }
   ],
+  "support": {
+    "issues": "https://github.com/cengizonkal/yoksis-rest-client/issues",
+    "source": "https://github.com/cengizonkal/yoksis-rest-client"
+  },
   "require": {
-    "php": ">=5.5",
-    "guzzlehttp/guzzle": "^6.0",
-    "fakerphp/faker": "^1.9"
+    "php": ">=7.2.5",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^6.5.8 || ^7.4.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8"
+    "phpunit/phpunit": "^8.5 || ^9.6"
   },
   "autoload": {
     "psr-4": {
@@ -23,11 +29,15 @@
     }
   },
   "autoload-dev": {
-    "classmap": [
-      "tests"
-    ]
+    "psr-4": {
+      "Conkal\\YOKSIS\\Tests\\": "tests/"
+    }
   },
   "scripts": {
-    "test": "phpunit tests"
+    "test": "phpunit --testsuite unit",
+    "test:integration": "phpunit --testsuite integration"
+  },
+  "config": {
+    "sort-packages": true
   }
 }

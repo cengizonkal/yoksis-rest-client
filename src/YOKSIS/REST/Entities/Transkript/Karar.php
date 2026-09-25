@@ -2,7 +2,9 @@
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
 
-class Karar
+use Conkal\YOKSIS\REST\Entities\Entity;
+
+class Karar extends Entity
 {
 
 

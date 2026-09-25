@@ -5,19 +5,15 @@ namespace Conkal\YOKSIS\REST\Resources\Traits;
 
 
 use Conkal\YOKSIS\REST\Entities\Entity;
-use Conkal\YOKSIS\REST\YOK;
 
-/**
- * Trait FindTrait
- * @package Conkal\YOKSIS\REST\Resources\Traits
- * @property Entity $entity
- * @property YOK $client
- * @property string $endPoint
- */
 trait CreateTrait
 {
+    /**
+     * @param Entity $entity
+     * @return mixed Servisin döndürdüğü yanıt (JSON çözülmüş ya da ham metin)
+     */
     public function create(Entity $entity)
     {
-        return json_decode($this->client->send($this->endPoint, ['method' => 'post', 'json' => $entity->toArray()])->getBody());
+        return $this->request($this->endPoint, ['method' => 'POST', 'json' => $entity->toArray()]);
     }
 }

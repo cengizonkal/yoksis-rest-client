@@ -1,11 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit colors="true" backupGlobals="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true">
-    <php>
-        <env name="YOKSIS_USERNAME" value="username"/>
-        <env name="YOKSIS_PASSWORD" value="password"/>
-        <env name="TEST_TCKNO" value="TEST_TCKNO"/>
-    </php>
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         convertDeprecationsToExceptions="true">
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <!--
+        Entegrasyon testleri için phpunit.xml.dist dosyasını phpunit.xml olarak kopyalayıp
+        aşağıdaki değişkenleri doldurun (ya da ortam değişkeni olarak tanımlayın):
+        YOKSIS_USERNAME, YOKSIS_PASSWORD, YOKSIS_BASE_URI, TEST_TCKNO, TEST_BIRIMID, TEST_UNIVERSITEID
+    -->
 </phpunit>

@@ -2,7 +2,7 @@
 
 namespace Conkal\YOKSIS\REST\Entities;
 
-abstract class Tanim
+class Tanim extends Entity
 {
     public $kod;
     public $ad;
