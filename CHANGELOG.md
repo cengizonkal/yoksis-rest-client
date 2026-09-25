@@ -1,6 +1,6 @@
 # Değişiklik Günlüğü
 
-## [Yayınlanmadı]
+## [1.1.0] - 2026-09-25
 
 ### Eklenenler
 - YÖK "REST Servisler Yardım Dökümanı" (sürüm 2.0) kapsamındaki eksik servisler:
@@ -72,5 +72,5 @@ otomatik olarak yükseltilmez; yükseltmek için `composer require conkal/yoksis
 - Transkript alt sınıflarının (`Tez`, `NotBaremi`, `Karar`, ...) diziden doldurulamaması.
 - `KykOgrenciSorgula` kaynağında yanlış erişim belirleyicileri.
 
-[Yayınlanmadı]: https://github.com/cengizonkal/yoksis-rest-client/compare/v1.0.0...HEAD
+[1.1.0]: https://github.com/cengizonkal/yoksis-rest-client/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/cengizonkal/yoksis-rest-client/compare/v0.2.1...v1.0.0
