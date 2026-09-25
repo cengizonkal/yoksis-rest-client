@@ -1,6 +1,9 @@
 # Değişiklik Günlüğü
 
-## [Yayınlanmadı]
+## [0.3.0] - 2026-09-25
+
+Bu sürüm geriye uyumsuz değişiklikler içerir (bkz. *Değişenler*). `^0.2` kısıtını kullanan projeler
+otomatik olarak yükseltilmez; yükseltmek için `composer require conkal/yoksis-rest-client:^0.3` çalıştırın.
 
 ### Eklenenler
 - `YOK::TEST_URI` ve `YOK::PRODUCTION_URI` sabitleri.
@@ -27,3 +30,5 @@
 - PHP 8.2+ sürümlerinde dinamik özellik (dynamic property) uyarıları.
 - Transkript alt sınıflarının (`Tez`, `NotBaremi`, `Karar`, ...) diziden doldurulamaması.
 - `KykOgrenciSorgula` kaynağında yanlış erişim belirleyicileri.
+
+[0.3.0]: https://github.com/cengizonkal/yoksis-rest-client/compare/v0.2.1...v0.3.0

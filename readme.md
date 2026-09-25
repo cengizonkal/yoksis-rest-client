@@ -18,6 +18,8 @@ YÖKSİS (Yükseköğretim Bilgi Sistemi) OBS REST servisleri için PHP istemcis
 composer require conkal/yoksis-rest-client
 ```
 
+0.2.x sürümünden yükseltiyorsanız geriye uyumsuz değişiklikler için [CHANGELOG.md](CHANGELOG.md) dosyasına bakın.
+
 ## Kullanım
 
 ```php
