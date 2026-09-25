@@ -2,7 +2,9 @@
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
 
-class Aciklama
+use Conkal\YOKSIS\REST\Entities\Entity;
+
+class Aciklama extends Entity
 {
 
 

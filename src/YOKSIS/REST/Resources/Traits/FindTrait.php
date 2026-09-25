@@ -3,31 +3,26 @@
 
 namespace Conkal\YOKSIS\REST\Resources\Traits;
 
-use Conkal\YOKSIS\REST\Entities\Entity;
-use Conkal\YOKSIS\REST\YOK;
 
-/**
- * Trait FindTrait
- * @package Conkal\YOKSIS\REST\Resources\Traits
- * @property Entity $entity
- * @property YOK $client
- * @property string $endPoint
- */
+use Conkal\YOKSIS\REST\Entities\Entity;
+
 trait FindTrait
 {
+    /**
+     * Tek bir kayıt dönerse entity, birden fazla kayıt dönerse entity dizisi, hiç kayıt yoksa null döndürür.
+     *
+     * @param int|string $id
+     * @return Entity|Entity[]|null
+     */
     public function find($id)
     {
-        $items = json_decode($this->client->send($this->endPoint.'/'.$id)->getBody());
+        $entities = $this->hydrateMany($this->request($this->endPoint . '/' . rawurlencode((string)$id)));
 
-        //if there is only one item in the array, return it
-        if (count($items) == 1) {
-            return new $this->entity($items[0]);
+        if (count($entities) === 0) {
+            return null;
         }
-
-        //if there is more than one item in the array, return an array of entities
-        $entities = [];
-        foreach ($items as $item) {
-            $entities[] = new $this->entity($item);
+        if (count($entities) === 1) {
+            return $entities[0];
         }
         return $entities;
     }

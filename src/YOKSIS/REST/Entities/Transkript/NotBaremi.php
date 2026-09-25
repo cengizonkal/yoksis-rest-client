@@ -2,8 +2,10 @@
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
 
+use Conkal\YOKSIS\REST\Entities\Entity;
 
-class NotBaremi
+
+class NotBaremi extends Entity
 {
 
     /** @var NotDTO[] */

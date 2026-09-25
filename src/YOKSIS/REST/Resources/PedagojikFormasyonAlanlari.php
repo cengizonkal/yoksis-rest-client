@@ -3,10 +3,8 @@
 
 namespace Conkal\YOKSIS\REST\Resources;
 
-use Conkal\YOKSIS\REST\Entities\Entity;
 use Conkal\YOKSIS\REST\Entities\PedagojikFormasyonAlani;
 use Conkal\YOKSIS\REST\Resources\Traits\AllTrait;
-use Conkal\YOKSIS\REST\Resources\Traits\FindTrait;
 
 /**
  * Class PedagojikFormasyonAlanlari

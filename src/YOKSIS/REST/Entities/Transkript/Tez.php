@@ -3,7 +3,9 @@
 
 namespace Conkal\YOKSIS\REST\Entities\Transkript;
 
-class Tez
+use Conkal\YOKSIS\REST\Entities\Entity;
+
+class Tez extends Entity
 {
     /** @var string */
     public $tezBaslangicTarihi;

@@ -13,19 +13,15 @@ class YerlestirmeVeri extends ResourceAbstract
     protected $entity = \Conkal\YOKSIS\REST\Entities\YerlestirmeVeri::class;
 
     /**
-     * @param array $query
+     * @param array $query ör. ['tur' => 'YKS', 'yil' => '2019']
      * @return \Conkal\YOKSIS\REST\Entities\YerlestirmeVeri[]
      */
     public function query(array $query)
     {
-        $response = json_decode($this->client->send($this->endPoint, ['query' => $query])->getBody())->content;
-        $entities = [];
-        if ($response) {
-            foreach ($response as $item) {
-                array_push($entities, new \Conkal\YOKSIS\REST\Entities\YerlestirmeVeri($item));
-            }
-        }
-        return $entities;
+        $response = $this->request($this->endPoint, ['query' => $query]);
+
+        // Servis sayfalı yanıt döndürür; kayıtlar "content" alanındadır.
+        return $this->hydrateMany(isset($response->content) ? $response->content : []);
     }
 
 }
