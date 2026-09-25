@@ -24,17 +24,21 @@ composer require conkal/yoksis-rest-client
 
 ```php
 use Conkal\YOKSIS\REST\YOK;
-use Conkal\YOKSIS\REST\Utilities\BasicAuth;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$client = new YOK(YOK::TEST_URI); // canlı ortam için YOK::PRODUCTION_URI
-$client->setAuth(new BasicAuth(getenv('YOKSIS_USERNAME'), getenv('YOKSIS_PASSWORD')));
+// canlı ortam için YOK::PRODUCTION_URI
+$client = YOK::create(YOK::TEST_URI, getenv('YOKSIS_USERNAME'), getenv('YOKSIS_PASSWORD'));
 ```
 
-Zaman aşımı, proxy gibi ayarlar için kendi Guzzle istemcinizi verebilirsiniz:
+`YOK::create()` zaman aşımı (30 sn) ve geçici hatalarda yeniden deneme ayarlarıyla hazır bir istemci döndürür;
+ayrıntılar için [Yeniden deneme ve loglama](#yeniden-deneme-ve-loglama) bölümüne bakın.
+
+İstemciyi elle de kurabilirsiniz. Proxy gibi özel ayarlar için kendi Guzzle istemcinizi verin:
 
 ```php
+use Conkal\YOKSIS\REST\Utilities\BasicAuth;
+
 $http = new \GuzzleHttp\Client(['timeout' => 30]);
 $client = new YOK(YOK::TEST_URI, $http, new BasicAuth($user, $pass));
 ```
@@ -57,7 +61,7 @@ $client = new YOK(YOK::TEST_URI, $http, new BasicAuth($user, $pass));
 | `$client->pedagojikFormasyonAlanlari()` | `pedagojikformasyonalanlari` | all |
 | `$client->hazirlikTurleri()` | `hazirlikturleri` | all |
 | `$client->hazirlikDetay()` | `hazirlikdetay` | all, query, find, create, delete |
-| `$client->yerlestirmeVeri()` | `yerlestirmeveri` | query |
+| `$client->yerlestirmeVeri()` | `yerlestirmeveri` | query, paginate, cursor |
 | `$client->fotografIndir()` | `fotografindir` | find, save |
 | `$client->ogrenciIzinler()` | `ogrenciizinler` | query, create, delete |
 | `$client->yurtDisindanYatayGecis()` | `yurtDisindanYatayGecis` | all, query, find, create, delete |
@@ -109,10 +113,36 @@ $pedagojikFormasyon = new PedagojikFormasyon([
 
 ### Yerleşen Verisi
 
+Servis sayfalı yanıt döndürür. `query()` yalnızca istenen sayfadaki kayıtları dizi olarak verir:
+
 ```php
 /** @var \Conkal\YOKSIS\REST\Entities\YerlestirmeVeri[] $yerlesenler */
 $yerlesenler = $client->yerlestirmeVeri()->query(['tur' => 'YKS', 'yil' => '2019']);
 ```
+
+Toplam kayıt ve sayfa sayısı gibi bilgiler için `paginate()` kullanın. Dönen `Page` nesnesi dizi gibi gezilebilir:
+
+```php
+$sayfa = $client->yerlestirmeVeri()->paginate(['tur' => 'YKS', 'yil' => '2019', 'page' => 0, 'size' => 100]);
+
+$sayfa->getTotalElements(); // toplam kayıt
+$sayfa->getTotalPages();    // toplam sayfa
+$sayfa->getPageNumber();    // 0'dan başlayan sayfa numarası
+$sayfa->hasMorePages();
+
+foreach ($sayfa as $yerlesen) { /* ... */ }
+```
+
+Tüm sayfaları tek tek elle çekmek yerine `cursor()` sayfaları ihtiyaç duyuldukça çeker; bellekte tek seferde yalnızca bir sayfa tutulur:
+
+```php
+foreach ($client->yerlestirmeVeri()->cursor(['tur' => 'YKS', 'yil' => '2019'], 500) as $yerlesen) {
+    // ...
+}
+```
+
+Sayfa parametreleri Spring Data biçimindedir (`page` 0'dan başlar, `size` sayfa boyutu).
+Servis sayfa parametresini yok sayarsa `cursor()` sonsuz döngüye girmez, durur.
 
 ### Hazırlık Detay
 
@@ -213,21 +243,99 @@ $kayit = $client->ogrenciTranskript()->find('<ogrenci id>');
 
 ## Hata yönetimi
 
-HTTP hataları (4xx/5xx) Guzzle istisnaları olarak fırlatılır:
+Tüm hatalar `Conkal\YOKSIS\REST\Exceptions` altındaki istisnalarla fırlatılır:
+
+| İstisna | Durum |
+|---|---|
+| `AuthenticationException` | 401, 403: kullanıcı adı, şifre ya da servis yetkisi hatalı |
+| `NotFoundException` | 404 |
+| `ValidationException` | 400, 409, 422: gönderilen veri reddedildi |
+| `RateLimitException` | 429 (`getRetryAfter()` bekleme süresini verir) |
+| `RequestFailedException` | Diğer 4xx; yukarıdakilerin üst sınıfı |
+| `ServerErrorException` | 5xx |
+| `ConnectionException` | Bağlantı hatası, zaman aşımı |
+
+Hepsi `YoksisException` arayüzünü uygular. HTTP hatalarında (`ApiException`) durum kodu, yanıt gövdesi ve
+yanıttan ayrıştırılabilen hata mesajı alınabilir:
 
 ```php
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\GuzzleException;
+use Conkal\YOKSIS\REST\Exceptions\AuthenticationException;
+use Conkal\YOKSIS\REST\Exceptions\ValidationException;
+use Conkal\YOKSIS\REST\Exceptions\YoksisException;
 
 try {
     $client->pedagojikFormasyon()->create($pedagojikFormasyon);
-} catch (ClientException $e) {
-    // 4xx: doğrulama hatası, yetki hatası vb.
-    echo (string) $e->getResponse()->getBody();
-} catch (GuzzleException $e) {
-    // bağlantı hatası, 5xx vb.
+} catch (ValidationException $e) {
+    echo $e->getErrorMessage();  // servisin döndürdüğü hata mesajı (varsa)
+    echo $e->getResponseBody();  // ham yanıt gövdesi
+} catch (AuthenticationException $e) {
+    // kimlik bilgilerini kontrol edin
+} catch (YoksisException $e) {
+    // diğer tüm YÖKSİS hataları
 }
 ```
+
+İstisnalar Guzzle'ın kendi sınıflarından türer (`ClientException`, `ServerException`, `ConnectException`),
+bu yüzden 1.0'daki `catch (ClientException $e)` gibi kodlar değiştirilmeden çalışmaya devam eder.
+
+## Yeniden deneme ve loglama
+
+`YOK::create()` ile oluşturulan istemci, geçici hatalarda (bağlantı hatası, 429, 502, 503, 504)
+isteği artan bekleme süreleriyle yeniden dener. `Retry-After` başlığına uyar. Varsayılan olarak yalnızca GET/HEAD
+istekleri yeniden denenir; `create()` gibi POST istekleri mükerrer kayıt oluşturmamak için denenmez.
+
+```php
+$client = YOK::create(YOK::TEST_URI, $kullanici, $sifre, [
+    'timeout' => 30,          // saniye
+    'connect_timeout' => 10,  // saniye
+    'retries' => 2,           // 0 yeniden denemeyi kapatır
+    'retry_delay' => 500,     // ms; her denemede iki katına çıkar
+    'logger' => $logger,      // herhangi bir PSR-3 logger (Monolog vb.)
+]);
+```
+
+`logger` verildiğinde her deneme metot, yol, durum kodu, süre ve deneme numarasıyla loglanır.
+T.C. kimlik numarası gibi kişisel verilerin log'a düşmemesi için sorgu parametreleri, istek/yanıt gövdeleri
+ve `Authorization` başlığı loglanmaz.
+
+## Laravel
+
+Paket, Laravel'in paket keşfi (auto-discovery) ile otomatik olarak kaydolur. `.env` dosyasına bilgileri ekleyin:
+
+```dotenv
+YOKSIS_BASE_URI=https://servisler.yok.gov.tr/resttest/obs/
+YOKSIS_USERNAME=...
+YOKSIS_PASSWORD=...
+# isteğe bağlı
+YOKSIS_TIMEOUT=30
+YOKSIS_RETRIES=2
+YOKSIS_LOG_CHANNEL=daily
+```
+
+Ayarları özelleştirmek için config dosyasını yayınlayın:
+
+```bash
+php artisan vendor:publish --tag=yoksis-config
+```
+
+İstemciyi facade ya da bağımlılık enjeksiyonu ile kullanın:
+
+```php
+use Conkal\YOKSIS\Laravel\Facades\Yoksis;
+use Conkal\YOKSIS\REST\YOK;
+
+$turler = Yoksis::hazirlikTurleri()->all();
+
+class YerlesenController
+{
+    public function index(YOK $yoksis)
+    {
+        return $yoksis->yerlestirmeVeri()->paginate(['tur' => 'YKS', 'yil' => '2019']);
+    }
+}
+```
+
+Laravel 6 ve sonraki sürümler desteklenir.
 
 ## Geliştirme
 

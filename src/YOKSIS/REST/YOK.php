@@ -15,9 +15,13 @@ use Conkal\YOKSIS\REST\Resources\PedagojikFormasyon;
 use Conkal\YOKSIS\REST\Resources\PedagojikFormasyonAlanlari;
 use Conkal\YOKSIS\REST\Resources\YerlestirmeVeri;
 use Conkal\YOKSIS\REST\Resources\YurtDisindanYatayGecis;
+use Conkal\YOKSIS\REST\Exceptions\ExceptionFactory;
+use Conkal\YOKSIS\REST\Http\ClientFactory;
 use Conkal\YOKSIS\REST\Utilities\AuthInterface;
+use Conkal\YOKSIS\REST\Utilities\BasicAuth;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\ResponseInterface;
 
@@ -58,6 +62,25 @@ class YOK
         $this->setBaseUri($baseUri);
         $this->client = $httpClient ?: new Client();
         $this->auth = $auth;
+    }
+
+    /**
+     * Yeniden deneme, zaman aşımı ve (isteğe bağlı) loglama ayarlarıyla hazır bir istemci oluşturur.
+     *
+     * <code>
+     * $client = YOK::create(YOK::TEST_URI, $kullanici, $sifre, ['logger' => $logger, 'retries' => 3]);
+     * </code>
+     *
+     * @param string $baseUri
+     * @param string|null $username
+     * @param string|null $password
+     * @param array $options ClientFactory::create() seçenekleri
+     * @return static
+     */
+    public static function create($baseUri, $username = null, $password = null, array $options = [])
+    {
+        $auth = $username !== null && $username !== '' ? new BasicAuth($username, $password) : null;
+        return new static($baseUri, ClientFactory::create($options), $auth);
     }
 
     /**
@@ -103,7 +126,14 @@ class YOK
      * @param string $endPoint
      * @param array $options
      * @return ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws Exceptions\AuthenticationException 401/403
+     * @throws Exceptions\NotFoundException 404
+     * @throws Exceptions\ValidationException 400/409/422
+     * @throws Exceptions\RateLimitException 429
+     * @throws Exceptions\RequestFailedException Diğer 4xx
+     * @throws Exceptions\ServerErrorException 5xx
+     * @throws Exceptions\ConnectionException Bağlantı hatası
+     * @throws GuzzleException Diğer Guzzle hataları
      */
     public function send($endPoint, $options = [])
     {
@@ -127,7 +157,11 @@ class YOK
         }
 
         $request = new Request($method, $this->baseUri . ltrim($endPoint, '/'), $headers);
-        return $this->client->send($request, $options);
+        try {
+            return $this->client->send($request, $options);
+        } catch (GuzzleException $e) {
+            throw ExceptionFactory::fromGuzzle($e);
+        }
     }
 
     public function pedagojikFormasyon()
