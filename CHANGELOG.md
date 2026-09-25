@@ -1,9 +1,9 @@
 # Değişiklik Günlüğü
 
-## [0.3.0] - 2026-09-25
+## [1.0.0] - 2026-09-25
 
 Bu sürüm geriye uyumsuz değişiklikler içerir (bkz. *Değişenler*). `^0.2` kısıtını kullanan projeler
-otomatik olarak yükseltilmez; yükseltmek için `composer require conkal/yoksis-rest-client:^0.3` çalıştırın.
+otomatik olarak yükseltilmez; yükseltmek için `composer require conkal/yoksis-rest-client:^1.0` çalıştırın.
 
 ### Eklenenler
 - `YOK::TEST_URI` ve `YOK::PRODUCTION_URI` sabitleri.
@@ -31,4 +31,4 @@ otomatik olarak yükseltilmez; yükseltmek için `composer require conkal/yoksis
 - Transkript alt sınıflarının (`Tez`, `NotBaremi`, `Karar`, ...) diziden doldurulamaması.
 - `KykOgrenciSorgula` kaynağında yanlış erişim belirleyicileri.
 
-[0.3.0]: https://github.com/cengizonkal/yoksis-rest-client/compare/v0.2.1...v0.3.0
+[1.0.0]: https://github.com/cengizonkal/yoksis-rest-client/compare/v0.2.1...v1.0.0
